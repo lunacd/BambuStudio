@@ -139,7 +139,8 @@ elseif (MSVC)
     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} /MANIFEST:NO")
 else ()
     # Boost on Raspberry-Pi does not link to pthreads explicitly.
-    target_link_libraries(BambuStudio ${CMAKE_DL_LIBS} -lstdc++ Threads::Threads pangoft2-1.0)
+    pkg_check_modules(pangoft2 REQUIRED IMPORTED_TARGET pangoft2)
+    target_link_libraries(BambuStudio ${CMAKE_DL_LIBS} -lstdc++ Threads::Threads PkgConfig::pangoft2)
 endif ()
 
 # Add the Slic3r GUI library, libcurl, OpenGL and GLU libraries.
