@@ -604,7 +604,7 @@ target_link_libraries(libslic3r
     noise::noise
     libnest2d
     admesh
-    cereal
+    cereal::cereal
     libigl
     miniz
     boost_libs
