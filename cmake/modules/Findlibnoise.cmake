@@ -21,7 +21,7 @@ find_path(LIBNOISE_INCLUDE_DIR NAMES noise.h
 find_library(LIBNOISE_LIBRARY
   NAMES libnoise_static noise_static
   PATHS ${CMAKE_PREFIX_PATH}
-  PATH_SUFFIXES lib
+  PATH_SUFFIXES ${CMAKE_INSTALL_LIBDIR}
   NO_DEFAULT_PATH
 )
 
