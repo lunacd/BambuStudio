@@ -654,6 +654,11 @@ if(NOT WIN32)
     find_package(Freetype REQUIRED)
     target_link_libraries(libslic3r Freetype::Freetype)
     if (NOT APPLE)
+        pkg_check_modules(fontconfig REQUIRED IMPORTED_TARGET fontconfig)
+        # Alias is used because OpenCASCADE transitively use a naked `fontconfig` on its
+        # INTERFACE_LINK_LIBRARIES
+        add_library(fontconfig ALIAS PkgConfig::fontconfig)
+
         target_link_libraries(libslic3r fontconfig)
     endif()
 endif()
