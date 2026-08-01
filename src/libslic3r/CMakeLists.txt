@@ -518,7 +518,7 @@ if(MSVC AND MSVC_VERSION GREATER_EQUAL 1950 AND NOT DEFINED OpenCV_RUNTIME)
     # Current Windows deps still package OpenCV under the vc16 runtime layout.
     set(OpenCV_RUNTIME vc16)
 endif()
-find_package(OpenCV REQUIRED core)
+find_package(OpenCV REQUIRED core imgproc imgcodecs)
 find_package(assimp REQUIRED)
 cmake_policy(POP)
 
@@ -623,7 +623,7 @@ target_link_libraries(libslic3r
     ${OCCT_LIBS}
     Clipper2
     mcut
-    opencv_world
+    ${OpenCV_LIBS}
     ${_cgal_tgt}
     assimp::assimp
     )
