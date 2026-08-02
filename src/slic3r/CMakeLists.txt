@@ -756,9 +756,8 @@ endif()
 # layer and sub-libraries. This forces us to use the include locations and
 # link these libraries.
 if (UNIX AND NOT APPLE)
-    find_package(GTK${SLIC3R_GTK} REQUIRED)
-    target_include_directories(libslic3r_gui PRIVATE ${GTK${SLIC3R_GTK}_INCLUDE_DIRS})
-    target_link_libraries(libslic3r_gui ${GTK${SLIC3R_GTK}_LIBRARIES})
+    pkg_check_modules(GTK REQUIRED IMPORTED_TARGET gtk+-3.0)
+    target_link_libraries(libslic3r_gui PkgConfig::GTK)
 
     pkg_check_modules(WEBKIT2GTK_4_1 QUIET webkit2gtk-4.1)
     if (WEBKIT2GTK_4_1_FOUND)
