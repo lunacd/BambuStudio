@@ -56,6 +56,7 @@ bambustudio_add_cmake_project(wxWidgets
         -DwxUSE_LIBJPEG=sys
         -DwxUSE_LIBTIFF=sys
         -DwxUSE_EXPAT=sys
+        -DWX_NO_REGEX_ADVANCED=ON
         ${_wx_egl}
 )
 
