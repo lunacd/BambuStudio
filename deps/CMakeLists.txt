@@ -133,16 +133,18 @@ function(bambustudio_add_cmake_project projectname)
     message(STATUS "CMAKE_GENERATOR_PLATFORM is ${CMAKE_GENERATOR_PLATFORM} ")
     message(STATUS "CMAKE_SYSTEM_PROCESSOR is ${CMAKE_SYSTEM_PROCESSOR} ")
 
+    set(DEP_INSTALL_PREFIX "$ENV{DESTDIR}${CMAKE_INSTALL_PREFIX}")
+
     ExternalProject_Add(
         dep_${projectname}
         EXCLUDE_FROM_ALL    ON
-        INSTALL_DIR         ${DESTDIR}/usr/local
+        INSTALL_DIR         ${DEP_INSTALL_PREFIX}
         DOWNLOAD_DIR        ${DEP_DOWNLOAD_DIR}/${projectname}
         ${_gen}
         CMAKE_ARGS
-            -DCMAKE_INSTALL_PREFIX:STRING=${DESTDIR}/usr/local
+            -DCMAKE_INSTALL_PREFIX:STRING=${CMAKE_INSTALL_PREFIX}
             -DCMAKE_MODULE_PATH:STRING=${PROJECT_SOURCE_DIR}/../cmake/modules
-            -DCMAKE_PREFIX_PATH:STRING=${DESTDIR}/usr/local
+            -DCMAKE_PREFIX_PATH:STRING=${DEP_INSTALL_PREFIX}
             -DCMAKE_DEBUG_POSTFIX:STRING=d
             -DCMAKE_C_COMPILER:STRING=${CMAKE_C_COMPILER}
             -DCMAKE_CXX_COMPILER:STRING=${CMAKE_CXX_COMPILER}
