@@ -27,7 +27,9 @@ bambustudio_add_cmake_project(wxWidgets
     GIT_REPOSITORY "https://github.com/bambulab/wxWidgets"
     GIT_TAG master
     DEPENDS ${PNG_PKG} ${ZLIB_PKG} ${EXPAT_PKG} ${TIFF_PKG} ${JPEG_PKG}
-    PATCH_COMMAND ${GIT_EXECUTABLE} apply ${CMAKE_CURRENT_LIST_DIR}/0001-Fix-CMake-detection-of-HAV_VSNPRINTF_DECL.patch
+    PATCH_COMMAND ${GIT_EXECUTABLE} apply
+        ${CMAKE_CURRENT_LIST_DIR}/0001-Fix-CMake-detection-of-HAV_VSNPRINTF_DECL.patch
+        ${CMAKE_CURRENT_LIST_DIR}/0002-Fix-wx-config-DESTDIR-symlink.patch
     CMAKE_ARGS
         -DCMAKE_POLICY_VERSION_MINIMUM=3.5
         -DwxBUILD_PRECOMP=OFF

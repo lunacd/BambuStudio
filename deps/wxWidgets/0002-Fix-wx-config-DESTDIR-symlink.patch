@@ -1,0 +1,50 @@
+From 3ab9929e9bb7d509cac9f90e8a96207f8938af2e Mon Sep 17 00:00:00 2001
+From: Patch Author <patch@example.com>
+Date: Mon, 2 Nov 2026 20:55:21 -0500
+Subject: [PATCH] Install wx-config symlink inside DESTDIR
+
+The wx-config symlink was created directly under CMAKE_INSTALL_PREFIX,
+ignoring the DESTDIR staging directory used by installers. This placed
+the link outside the staged installation and left it pointing to an
+absolute path not present in the staging tree.
+
+Create the link at $DESTDIR$CMAKE_INSTALL_PREFIX/bin/wx-config and use a
+relative target, so the staged link is valid and remains valid after the
+installation is moved to its final location. Remove any existing link
+first to keep repeated installs working.
+---
+ build/cmake/install.cmake | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
+
+diff --git a/build/cmake/install.cmake b/build/cmake/install.cmake
+index 968dff8..34f5cd7 100644
+--- a/build/cmake/install.cmake
++++ b/build/cmake/install.cmake
+@@ -44,12 +44,18 @@ else()
+         )
+ 
+     install(DIRECTORY DESTINATION "bin")
+-    install(CODE "execute_process( \
+-        COMMAND ${CMAKE_COMMAND} -E create_symlink \
+-        ${CMAKE_INSTALL_PREFIX}/lib/wx/config/${wxBUILD_FILE_ID} \
+-        ${CMAKE_INSTALL_PREFIX}/bin/wx-config \
+-        )"
+-    )
++    install(CODE "
++        set(wx_config_link \"\$ENV{DESTDIR}\${CMAKE_INSTALL_PREFIX}/bin/wx-config\")
++        file(REMOVE \"\${wx_config_link}\")
++        execute_process(
++            COMMAND \"${CMAKE_COMMAND}\" -E create_symlink
++                \"../lib/wx/config/${wxBUILD_FILE_ID}\"
++                \"\${wx_config_link}\"
++            RESULT_VARIABLE wx_config_result)
++        if(NOT wx_config_result EQUAL 0)
++            message(FATAL_ERROR \"Failed to create symlink \${wx_config_link}\")
++        endif()
++    ")
+ endif()
+ 
+ # uninstall target
+-- 
+2.53.0
+
